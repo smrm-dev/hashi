@@ -56,8 +56,8 @@ contract MuonAdapter is BlockHashOracleAdapter, MuonClient {
     /// @param _hashes Array of hashes to set for the given ids.
     /// @notice Only callable by `amb` with a message passed from `reporter.
     /// @notice Will revert if given array lengths do not match.
-    function storeHashes(uint256[] memory ids, bytes32[] memory _hashes) public {
-        // TODO: should verify inputs
+    function storeHashes(uint256[] memory ids, bytes32[] memory _hashes, MuonSig calldata muonSig) public {
+        verifyTSSAndGateway(ids, _hashes, muonSig);
         if (ids.length != _hashes.length) revert ArrayLengthMissmatch(address(this));
         for (uint256 i = 0; i < ids.length; i++) {
             _storeHash(block.chainid, ids[i], _hashes[i]);
